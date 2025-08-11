@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Dashboard - UniSync</title>
+    <link href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('dashboard') }}">
+                <i class="fas fa-graduation-cap me-2"></i>UniSync
+            </a>
+            <div class="navbar-nav ms-auto">
+                <span class="navbar-text me-3">
+                    <i class="fas fa-chalkboard-teacher me-1"></i>{{ user.username }} ({{ user.role|title }})
+                </span>
+                <a class="nav-link" href="{{ url_for('logout') }}">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-12">
+                <h2 class="mb-4"><i class="fas fa-chalkboard-teacher me-2"></i>Teacher Dashboard</h2>
+                
+                <!-- Quick Stats -->
+                <div class="row mb-4">
+                    <div class="col-md-4">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <i class="fas fa-user-graduate fa-2x text-primary mb-2"></i>
+                                <h3>{{ students|length }}</h3>
+                                <p class="text-muted mb-0">Total Students</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <i class="fas fa-calendar-check fa-2x text-success mb-2"></i>
+                                <h3>0</h3>
+                                <p class="text-muted mb-0">Today's Attendance</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <i class="fas fa-video fa-2x {% if camera_status == 'Connected' %}text-success{% else %}text-danger{% endif %} mb-2"></i>
+                                <h5>{{ camera_status }}</h5>
+                                <p class="text-muted mb-0">Camera Status</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Cards -->
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <i class="fas fa-clipboard-check me-2"></i>Attendance Management
+                                </h5>
+                                <p class="card-text">Mark attendance for students and manage attendance records.</p>
+                                <a href="{{ url_for('mark_attendance') }}" class="btn btn-primary">
+                                    <i class="fas fa-check me-1"></i>Mark Attendance
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <i class="fas fa-video me-2"></i>Camera Monitoring
+                                </h5>
+                                <p class="card-text">Monitor the ESP32 camera feed for attendance tracking.</p>
+                                <a href="{{ url_for('camera_stream') }}" class="btn btn-outline-primary">
+                                    <i class="fas fa-eye me-1"></i>View Camera Stream
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Students List -->
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-list me-2"></i>Students
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        {% if students %}
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Username</th>
+                                        <th>Email</th>
+                                        <th>Date Joined</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for student in students %}
+                                    <tr>
+                                        <td>{{ student.id }}</td>
+                                        <td>
+                                            <i class="fas fa-user-graduate text-warning me-2"></i>
+                                            {{ student.username }}
+                                        </td>
+                                        <td>{{ student.email }}</td>
+                                        <td>{{ student.date_created.strftime('%Y-%m-%d') if student.date_created else 'N/A' }}</td>
+                                        <td>
+                                            <a href="{{ url_for('mark_attendance') }}?student={{ student.username }}" 
+                                               class="btn btn-sm btn-outline-primary me-1" 
+                                               title="Mark Attendance">
+                                                <i class="fas fa-check"></i>
+                                            </a>
+                                            <button class="btn btn-sm btn-outline-info" title="View Attendance History">
+                                                <i class="fas fa-history"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        {% else %}
+                        <div class="text-center py-4">
+                            <i class="fas fa-user-graduate fa-3x text-muted mb-3"></i>
+                            <h5>No Students Found</h5>
+                            <p class="text-muted">No students have been registered yet.</p>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

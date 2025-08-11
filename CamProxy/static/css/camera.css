@@ -1,0 +1,140 @@
+/**
+ * Camera Stream Styles
+ * Styles for the camera stream interface
+ */
+
+.stream-container {
+    position: relative;
+    background: var(--bs-dark);
+    border: 2px solid var(--bs-border-color);
+    border-radius: 0.375rem;
+    overflow: hidden;
+    min-height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.stream-image {
+    max-width: 100%;
+    max-height: 500px;
+    height: auto;
+    display: block;
+    object-fit: contain;
+}
+
+.stream-placeholder {
+    padding: 2rem;
+    text-align: center;
+    color: var(--bs-secondary);
+}
+
+.stream-placeholder i {
+    opacity: 0.5;
+}
+
+/* Fullscreen styles */
+.stream-image:fullscreen {
+    object-fit: contain;
+    width: 100vw;
+    height: 100vh;
+}
+
+/* Loading state for buttons */
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Camera status indicators */
+.badge {
+    font-size: 0.75em;
+    padding: 0.375rem 0.75rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .stream-container {
+        min-height: 200px;
+    }
+    
+    .stream-image {
+        max-height: 300px;
+    }
+    
+    .btn-sm {
+        font-size: 0.75rem;
+        padding: 0.25rem 0.5rem;
+    }
+}
+
+/* Animation for status changes */
+.badge {
+    transition: all 0.3s ease;
+}
+
+/* Error state */
+.stream-error {
+    background-color: var(--bs-danger-bg-subtle);
+    border-color: var(--bs-danger-border-subtle);
+    color: var(--bs-danger-text-emphasis);
+}
+
+/* Success state */
+.stream-success {
+    background-color: var(--bs-success-bg-subtle);
+    border-color: var(--bs-success-border-subtle);
+    color: var(--bs-success-text-emphasis);
+}
+
+/* Custom card styling for camera interface */
+.card {
+    border: 1px solid var(--bs-border-color);
+    background-color: var(--bs-body-bg);
+}
+
+.card-header {
+    background-color: var(--bs-tertiary-bg);
+    border-bottom: 1px solid var(--bs-border-color);
+}
+
+/* Hover effects for interactive elements */
+.btn:hover {
+    transform: translateY(-1px);
+    transition: transform 0.2s ease;
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+/* Status monitoring indicators */
+.status-indicator {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 0.5rem;
+}
+
+.status-indicator.online {
+    background-color: var(--bs-success);
+}
+
+.status-indicator.offline {
+    background-color: var(--bs-danger);
+}
+
+.status-indicator.unknown {
+    background-color: var(--bs-warning);
+}
+
+/* Loading spinner animation */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.fa-spin {
+    animation: spin 1s linear infinite;
+}
